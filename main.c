@@ -96,15 +96,17 @@ void runner(uint64_t port_in, struct sockaddr_in *client_addrs, size_t clients_c
         received_count = recvfrom(sock_fd, buffer, BUFFER,
                                   MSG_WAITALL, (struct sockaddr *) &source_addr,
                                   &addr_len);
-
+#ifdef DEBUG
         printf("udp count: %zu\n", received_count);
+#endif
 
         for (size_t i = 0; i < clients_count; i++) {
             sent_count = sendto(sender_sock_fd, buffer, received_count,
                                 0, (const struct sockaddr *) (&client_addrs[i]),
                                 sizeof(client_addrs[i]));
-
+#ifdef DEBUG
             printf("sent count to client %zu count: %zu\n", i, sent_count);
+#endif
         }
     }
 #pragma clang diagnostic pop
