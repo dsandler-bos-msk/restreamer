@@ -46,9 +46,11 @@ int main(int argc, char *argv[]) {
 
     printf("PORT_IN: %hu, DESTINATIONS:\n", port_in);
     char ipv4_addr[INET_ADDRSTRLEN];
+    in_port_t sin_port;
     for (size_t i = 0; i < clients_count; i++) {
         inet_ntop(AF_INET, &(client_addrs[i].sin_addr), ipv4_addr, INET_ADDRSTRLEN);
-        printf("%s:%i\n", ipv4_addr, client_addrs[i].sin_port);
+        sin_port = (client_addrs[i].sin_port & 0xff00) >> 8 | (client_addrs[i].sin_port & 0xff) << 8;
+        printf("%s:%i\n", ipv4_addr, sin_port );
     }
 
     runner(port_in, client_addrs, clients_count);
